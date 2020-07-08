@@ -28,10 +28,20 @@ app.get("/api/hello", function (req, res) {
 app.get("/api/timestamp/:date_string", (req, res) => {
   var {date_string} = req.params;
   var date = new Date(date_string);
-  if (date === null) {
-    if (date_string == '') date = new Date();
-    else if (parseInt(date_string) !== NaN) date = new Date(parseInt(date_string));
-    else date = {"error": "Invalid Date"};
+  console.log(parseInt(date_string));
+  if (!date) {
+    if (date_string == '') {
+      console.log("hi1");
+      date = new Date();
+    }
+    else if (parseInt(date_string) != NaN) {
+      console.log("hi2");
+      date = new Date(parseInt(date_string));
+    }
+    else {
+      console.log("hi3");
+      date = {"error": "Invalid Date"};
+    }
   }
   console.log(date);
   res.json(date);
