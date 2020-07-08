@@ -27,9 +27,14 @@ app.get("/api/hello", function (req, res) {
 //API endpoint
 app.get("/api/timestamp/:date_string", (req, res) => {
   var {date_string} = req.params;
-  date_string = new Date(date_string);
-  console.log(date_string);
-  res.json(date_string);
+  var date = new Date(date_string);
+  if (date === null) {
+    if (date_string == '') date = new Date();
+    else if (parseInt(date_string) !== NaN) date = new Date(parseInt(date_string));
+    else date = {"error": "Invalid Date"};
+  }
+  console.log(date);
+  res.json(date);
 });
 
 
