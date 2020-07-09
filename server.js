@@ -28,25 +28,27 @@ app.get("/api/hello", function (req, res) {
 app.get("/api/timestamp/:date_string", (req, res) => {
   var {date_string} = req.params;
   var date = new Date(date_string);
-  console.log(parseInt(date_string));
+  if (date_string == '') console.log("hi4");
   if (date.toString() === "Invalid Date" || date_string == '') {
     if (date_string == '') {
       console.log("hi1");
       date = new Date();
     }
-    else if (parseInt(date_string) != NaN) {
+    else if (isNaN(parseInt(date_string)) == false)  {
       console.log("hi2");
       date = new Date(parseInt(date_string));
     }
-    else {
-      console.log("hi3");
-      date = {"error": "Invalid Date"};
-    }
   }
-  res.json({
-    "unix": date.getTime(),
-    "utc": date.toUTCString()
-  });
+  if (date.toString() === "Invalid Date") {
+    console.log("isEmpty");
+    res.json({"error": "Invalid Date"});
+  }
+  else {
+    res.json({
+      "unix": date.getTime(),
+      "utc": date.toUTCString()
+    });
+  }
 });
 
 
