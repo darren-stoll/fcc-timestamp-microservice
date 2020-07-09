@@ -25,24 +25,27 @@ app.get("/api/hello", function (req, res) {
 });
 
 //API endpoint
-app.get("/api/timestamp/:date_string", (req, res) => {
-  var {date_string} = req.params;
+app.get("/api/timestamp/:date_string?", (req, res) => {
+  // Grab parameter from route
+  var date_string = req.params.date_string;
+  // Create date object from parameter
   var date = new Date(date_string);
-  if (date_string == '') console.log("hi4");
-  if (date.toString() === "Invalid Date" || date_string == '') {
-    if (date_string == '') {
-      console.log("hi1");
+  // Check if the date object is valid
+  if (date.toString() === "Invalid Date") {
+    // Check if the parameter was empty; if empty, then create new Date based on current time
+    if (typeof date_string == 'undefined') {
       date = new Date();
     }
+    // Check if the parameter was an invalid date but was a valid integer; if valid int, create date object on current time in milliseconds
     else if (isNaN(parseInt(date_string)) == false)  {
-      console.log("hi2");
       date = new Date(parseInt(date_string));
     }
   }
+  // If the date is invalid, return an error
   if (date.toString() === "Invalid Date") {
-    console.log("isEmpty");
     res.json({"error": "Invalid Date"});
   }
+  // Otherwise, return the json object with the unix and utc values
   else {
     res.json({
       "unix": date.getTime(),
